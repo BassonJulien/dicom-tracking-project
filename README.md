@@ -6,8 +6,8 @@ Final year of engineer school project, the goal of the project is to track a cat
 
 You will need the following things properly installed on your computer.
 
-* [Git](https://git-scm.com/)
-* [Python](https://www.python.org/)
+* [Git](https://git-scm.com/) 
+* [Python](https://www.python.org/) (v 3+)
 * [ffmpeg](http://ubuntuhandbook.org/index.php/2016/09/install-ffmpeg-3-1-ubuntu-16-04-ppa/0)
 
 * Python libraries: PIL, dicom, numpy, matplotlib, cm, pylab.
