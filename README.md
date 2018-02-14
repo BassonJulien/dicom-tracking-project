@@ -7,6 +7,7 @@ Final year of engineer school project, the goal of the project is to track a cat
 You will need the following things properly installed on your computer.
 
 * [Git](https://git-scm.com/) 
+* [OpenCV](https://www.learnopencv.com/install-opencv3-on-ubuntu/)
 * [Python](https://www.python.org/) (v 3+)
 * [ffmpeg](http://ubuntuhandbook.org/index.php/2016/09/install-ffmpeg-3-1-ubuntu-16-04-ppa/0)
 
