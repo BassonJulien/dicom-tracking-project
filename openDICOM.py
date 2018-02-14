@@ -1,7 +1,6 @@
 import dicom
 import os
 import numpy
-import Image
 import cv2
 import sys
 from matplotlib import pyplot, cm
@@ -66,8 +65,6 @@ if __name__ == '__main__':
 
     if tracker_type == 'BOOSTING':
         tracker = cv2.TrackerBoosting_create()
-    if tracker_type == 'MIL':
-        tracker = cv2.TrackerMIL_create()
     if tracker_type == 'KCF':
         tracker = cv2.TrackerKCF_create()
     if tracker_type == 'TLD':
@@ -78,7 +75,7 @@ if __name__ == '__main__':
         tracker = cv2.TrackerGOTURN_create()
 
 # Read video
-video = cv2.VideoCapture("movie.mp4")
+video = cv2.VideoCapture("dicom.mp4")
 
 # Exit if video not opened.
 if not video.isOpened():
