@@ -3,7 +3,6 @@ import numpy as np
 import cv2
 from matplotlib import pyplot as plt
 
-
 # Constante
 x1_crope = 200
 x2_crope = 810
@@ -15,11 +14,15 @@ template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/t
 template2 = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/templateCANNYEDGES2.png")
 
 # check if the object is the catheter
-def verifyObject(good,kp1):
+def verifyObject(good,kp1,refPoint):
 
-    point = average(good,kp1)
+    point = average(good,kp1,refPoint)
     size_object_recongnize = point[2]
     size_good = np.shape(good)[0]
+    x = point[0]
+    y = point[1]
+
+    print("refPoint : ",refPoint)
 
     # If the object tracked have more than the half of matches points, it's catheter
     if size_object_recongnize >= round(0.70 * size_good):
@@ -28,25 +31,26 @@ def verifyObject(good,kp1):
     # Test for each matches points
     else:
         for i in range(0,size_good):
-            if size_object_recongnize >= round(0.50 * size_good):
-                print('ok I found the catheter')
-                break
+            if refPoint[1] is not None :
+                if x < refPoint[0] + 10 and y < refPoint[1] + 10 and x > refPoint[0] - 10 and y > refPoint[1] - 10:
+                    print('ok I found the catheter')
+                    break
             else:
                 print('search...')
-                point = average(good[i:],kp1)
+                point = average(good[i:],kp1,refPoint)
                 size_object_recongnize = point[2]
                 print(point[0],point[1],point[2])
     return point
 
 
-def average(good,kp1):
+def average(good,kp1,refPoint):
 
     sumX = 0
     sumY = 0
     size = 0
     reX,refY = 0,0
     size_good = np.shape(good)[0]
-    for i in range(0,size_good):
+    for i in range(0, size_good):
 
         # Get the matching keypoints for each of the images
         img1_idx = good[i].queryIdx
@@ -57,24 +61,40 @@ def average(good,kp1):
         (x1, y1) = kp1[img1_idx].pt
 
         # To init the region with "normally" the best matches point
-        if size==0 :
+        if size == 0:
             print("init")
-            refY= y1
-            refX= x1
-            sumX += x1
-            sumY += y1
-            size+=1
-
-        # Work only in the region of the reference point(here the first point)
-        if x1<refX+50 and y1<refY+50 and x1 > refX-50 and y1 > refY-50:
-            print("test",refX,x1,y1)
+            refY = y1
+            refX = x1
             sumX += x1
             sumY += y1
             size += 1
+        if refPoint[0] is not None :
+            # Work only in the region of the reference point(here the first point)
+            if  refX < refPoint[0] + 10 and refY < refPoint[1] + 10 and refX > refPoint[0] - 10 and refY > refPoint[1] - 10:
+                if x1 < refX + 50 and y1 < refY + 50 and x1 > refX - 50 and y1 > refY - 50:
+                    print("test rentre dans la condition", refX, x1, y1)
+                    sumX += x1
+                    sumY += y1
+                    size += 1
+            else :
+                print("rentre pas")
+                refY = refPoint[1]
+                refX = refPoint[0]
+                # sumX += refPoint[0]
+                # sumY += refPoint[1]
+                # size += 1
+
+        else :
+            if x1 < refX + 50 and y1 < refY + 50 and x1 > refX - 50 and y1 > refY - 50:
+                print("test", refX, x1, y1)
+                sumX += x1
+                sumY += y1
+                size += 1
+
 
     # Calculate average points
-    x = sumX/size
-    y = sumY/size
+    x = sumX / size
+    y = sumY / size
 
     return x, y, size
 
@@ -108,26 +128,43 @@ def preprocess (img_dicom) :
     # Sort them in the order of their distance.
     matches = sorted(matches, key=lambda x: x.distance)
     # Draw the matches between the template and the image
-    image_matches = cv2.drawMatches(edges, kp1, template, kp2, matches[:15], None, flags=2)
+    # image_matches = cv2.drawMatches(edges, kp1, template, kp2, matches[:15], None, flags=2)
 
-    return matches, image_matches,kp1
+    return matches, kp1, img_dicom
 
 
-def main_orb_detection (img_dicom) :
+def main_orb_detection (img_dicom, refPoint) :
+
+    # if circle is  None:
+    #     # detect circles in the image
+    #     circle = houghTransform.findCircle(img_dicom)
+    #     cv2.circle(img_dicom, (circle[0], circle[1]), circle[2], (0, 0, 0), -1)
+    #     cv2.imshow('edges', img_dicom)
+    #
+    #
+    # else :
+    #     cv2.circle(img_dicom, (circle[0], circle[1]), circle[2], (0, 0, 0), -1)
+
+    matches = preprocess(img_dicom)[0]
+    img = preprocess(img_dicom)[2]
+    kp1 = preprocess(img_dicom)[1]
+
 
     # Matches between template and the image
-    matches = preprocess(img_dicom)[0]
-    image_matches = preprocess(img_dicom)[1]
-    kp1 = preprocess(img_dicom)[2]
 
-    point = verifyObject(matches[:15], kp1)
+    point = verifyObject(matches[:15], kp1, refPoint)
     pointX = point[0]
     pointY = point[1]
+    refPoint = [pointX,pointY]
 
     # Draw the rectangle region
-    cv2.rectangle(image_matches, (int(pointX - 100), int(pointY - 100)), (int(pointX + 100.00), int(pointY + 100.00)),
+    cv2.rectangle(img, (int(pointX - 50), int(pointY - 50)), (int(pointX + 50.00), int(pointY + 50.00)),
                   (255, 0, 0), 2)
 
-    plt.imshow(image_matches), plt.show()
-    cv2.imshow('edges', img_dicom)
-    cv2.waitKey(0)
+
+
+    # plt.imshow(image_matches), plt.show()
+    # cv2.imshow('edges', img_dicom)
+
+    return img,refPoint
+
