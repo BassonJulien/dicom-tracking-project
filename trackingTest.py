@@ -6,10 +6,10 @@ from plotPoints import draw_trajectory, lissage
 
 def preprocess(frame):
 
-    frame = cv2.medianBlur(frame, 5)
+    # frame = cv2.medianBlur(frame, 5)
     # ret, frame = cv2.threshold(frame, 114, 180, cv2.THRESH_BINARY_INV)
-    #
-    # # Dilatation
+
+    # Dilatation
     # kernel_dilate = np.ones((6, 5), np.uint8)
     # frame = cv2.dilate(frame, kernel_dilate, iterations=1)
     #
@@ -17,7 +17,7 @@ def preprocess(frame):
     # kernel_erode = np.ones((3, 1), np.uint8)
     # frame = cv2.erode(frame, kernel_erode, iterations=1)
 
-    frame = cv2.Canny(frame, 100, 200)
+    # frame = cv2.Canny(frame, 100, 200)
 
     return frame
 
@@ -47,7 +47,7 @@ def main():
             tracker = cv2.TrackerGOTURN_create()
 
     # Read video
-    video = cv2.VideoCapture("uint8.avi")
+    video = cv2.VideoCapture("videos/dicom5.avi")
 
     # Exit if video not opened.
     if not video.isOpened():
@@ -127,16 +127,15 @@ def main():
 
 x, y = main()
 
-# listeXY = list()
-# listTransition = []
-#
-#
-# for i in range(0, len(x)):
-#     listTransition = []
-#     listTransition.append(x[i])
-#     listTransition.append(y[i])
-#     listeXY.append(listTransition)
-#
-#
-# draw_trajectory(listeXY)
-# lissage(listeXY)
+listeXY = list()
+
+
+for i in range(0, len(x)):
+    listTransition = []
+    listTransition.append(x[i])
+    listTransition.append(y[i])
+    listeXY.append(listTransition)
+
+
+draw_trajectory(listeXY)
+lissage(listeXY)

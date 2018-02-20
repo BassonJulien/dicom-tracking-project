@@ -22,23 +22,17 @@ def draw_trajectory(points):
 
 
 def lissage(points):
+    xvals, yvals = bezier_curve(points, nTimes=100)
 
-    nPoints = len(points)
-    xpoints = [p[0] for p in points]
-    ypoints = [p[1] for p in points]
+    listePoints = list()
 
-    xvals, yvals = bezier_curve(points, nTimes=1000)
-    plt.plot(xvals, yvals)
-    plt.show()
+    for i in range(0, len(xvals)):
+        listTransition = []
+        listTransition.append(xvals[i])
+        listTransition.append(yvals[i])
+        listePoints.append(listTransition)
 
-    plt.plot(xpoints, ypoints, "ro")
-    for nr in range(len(points)):
-        plt.text(points[nr][0], points[nr][1], nr)
-
-    plt.show()
-
-
-
+    draw_trajectory(listePoints)
 
 def bernstein_poly(i, n, t):
     """
@@ -49,7 +43,6 @@ def bernstein_poly(i, n, t):
 
 
 def bezier_curve(points, nTimes):
-    print(points)
     """
        Given a set of control points, return the
        bezier curve defined by the control points.
@@ -70,6 +63,7 @@ def bezier_curve(points, nTimes):
     t = np.linspace(0.0, 1.0, nTimes)
 
     polynomial_array = np.array([ bernstein_poly(i, nPoints-1, t) for i in range(0, nPoints)   ])
+
 
     xvals = np.dot(xPoints, polynomial_array)
     yvals = np.dot(yPoints, polynomial_array)
