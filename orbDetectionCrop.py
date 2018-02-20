@@ -8,7 +8,7 @@ x1_crope = 200
 x2_crope = 810
 y1_crope = 260
 y2_crope = 750
-
+crop_constante = 100
 # Image of a catheter model
 template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/templateCANNYEDGES.png")
 template2 = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/templateCANNYEDGES2.png")
@@ -114,75 +114,74 @@ def average(good,kp1,refPoint):
     return x, y, size
 
 def preprocess (img, refPoint) :
-    # img_dicom = img_dicom[y1_crope:y2_crope, x1_crope:x2_crope]
+
+    # make a copy of the image to not update the original
     img_dicom = img.copy()
-    print("yolo",refPoint)
+    cv2.namedWindow('grande', cv2.WINDOW_NORMAL)
+    cv2.imshow('grande', img_dicom)
+    # cv2.resizeWindow('grande', 600, 600)
+
+    # First frame no refpoint
     if refPoint[0] is  None:
+        print("premiere iteration", refPoint)
         img_dicom = img_dicom[y1_crope:y2_crope, x1_crope:x2_crope]
-        x_cropeTot = x1_crope
-        y_cropeTot = y1_crope
+        # Origin is only the normal crop
+        x_origin = x1_crope
+        y_origin = y1_crope
 
-
+    # Catheter detected
     else :
-        # img_dicom = img_dicom[y1_crope:y2_crope, x1_crope:x2_crope]
-        # x_cropeTot = x1_crope
-        # y_cropeTot = y1_crope
-        img_dicom = img_dicom[y1_crope:y2_crope, x1_crope:x2_crope]
-        print("premiere condi")
-        pointX1 = int(refPoint[0]-100)
-        pointX2 = int(refPoint[0]+200)
-        pointY1 = int(refPoint[1]-100)
-        pointY2 = int(refPoint[1]+200)
-        img_dicom = img_dicom[pointY1:pointY2, pointX1:pointX2]
-        x_cropeTot = x1_crope
-        y_cropeTot = y1_crope
+        print("Cree les sous reperes",refPoint)
+        # Normal crope
+
+        try :
+            # try if there are multiple refpoints
+
+            print("3  eme et + it' ")
+            prevPointX =refPoint[0][0]
+            prevPointY = refPoint[0][1]
+            pointX =refPoint[1][0]
+            pointY = refPoint[1][1]
+
+            # Var for crop image, to know the decalage with the previous refPoint
+            pointX1_crop = int(pointX - crop_constante)
+            pointX2_crop = int(pointX + crop_constante)
+            pointY1_crop = int(pointY - crop_constante)
+            pointY2_crop = int(pointY + crop_constante)
+
+
+            x_origin = int(pointX1_crop)
+            y_origin = int(pointY1_crop)
+
+
+        except:
+            # Only one refPoint
+
+            print("2 eme it' ")
+            # prevPointX = 0
+            # prevPointY = 0
+            # Last refPoint detected
+            pointX = refPoint[0]
+            pointY = refPoint[1]
+            # Set the new repere origin
+            x_origin = pointX - crop_constante
+            y_origin = pointY - crop_constante
+
+            # Var for crop image, to know the decalage with the previous refPoint
+            pointX1_crop = int(pointX - crop_constante)
+            pointX2_crop = int(pointX + crop_constante)
+            pointY1_crop = int(pointY - crop_constante)
+            pointY2_crop = int(pointY + crop_constante)
+
+        # Crop image for the orb detection
+        print("cropage",pointY1_crop,pointX1_crop)
+        img_dicom = img_dicom[pointY1_crop:pointY2_crop, pointX1_crop:pointX2_crop]
         cv2.imshow('image_dilate', img_dicom)
         cv2.waitKey(0)
+        # To know the coordinates repere origin
 
-    # elif refPoint[0] < 100 and refPoint[1] < 100:
-    #     img_dicom = img_dicom[y1_crope:y2_crope, x1_crope:x2_crope]
-    #     print("premiere condi")
-    #     # pointX1 = int(refPoint[0]-70)
-    #     # pointX2 = int(refPoint[0]+70)
-    #     # pointY1 = int(refPoint[1]-70)
-    #     # pointY2 = int(refPoint[1]+70)
-    #     # img_dicom = img_dicom[pointY1:pointY2, pointX1:pointX2]
-    #     # cv2.imshow('image_dilate', img_dicom)
-    #     # cv2.waitKey(0)
-    #
-    # elif refPoint[0] > 100 and refPoint[1] > 100:
-    #     img_dicom = img_dicom[y1_crope:y2_crope, x1_crope:x2_crope]
-    #     print("2eme condi")
-    #
-    #     pointX1 = int(refPoint[0] - 100)
-    #     pointX2 = int(refPoint[0] + 100)
-    #     pointY1 = int(refPoint[1] - 100)
-    #     pointY2 = int(refPoint[1] + 100)
-    #     img_dicom = img_dicom[pointY1:pointY2, pointX1:pointX2]
-    #     # cv2.imshow('image_dilate', img_dicom)
-    #     # cv2.waitKey(0)
-    #
-    # elif refPoint[0] > 200 and refPoint[1] > 200:
-    #     img_dicom = img_dicom[y1_crope:y2_crope, x1_crope:x2_crope]
-    #     print("3eme condi")
-    #
-    #     pointX1 = int(refPoint[0] - 200)
-    #     pointX2 = int(refPoint[0] + 200)
-    #     pointY1 = int(refPoint[1] - 200)
-    #     pointY2 = int(refPoint[1] + 200)
-    #     img_dicom = img_dicom[pointY1:pointY2, pointX1:pointX2]
-    #     # print(img_dicom)
-    # else :
-    #     print("else condi")
-    #     img_dicom = img_dicom[y1_crope:y2_crope, x1_crope:x2_crope]
-    #     print("premiere condi")
-    #     pointX1 = int(refPoint[0]-30)
-    #     pointX2 = int(refPoint[0]+30)
-    #     pointY1 = int(refPoint[1]-30)
-    #     pointY2 = int(refPoint[1]+30)
-    #     img_dicom = img_dicom[pointY1:pointY2, pointX1:pointX2]
-    #     cv2.imshow('image_dilate', img_dicom)
-    #     cv2.waitKey(0)
+        # cv2.imshow('image_dilate', img_dicom)
+        # cv2.waitKey(0)
 
     # Filtrage to decrease noise
     img_blur = cv2.medianBlur(img_dicom, 5)
@@ -194,10 +193,6 @@ def preprocess (img, refPoint) :
         edges = cv2.Canny(img_blur, 100, 200)
         # cv2.imshow('image_dilate', edges)
         # cv2.waitKey(0)
-
-    # Erosion
-    # kernel_erode = np.ones((1,1),np.uint8)
-    # image_erode = cv2.erode(edges, kernel_erode, iterations = 1)
 
     # Initiate ORB detector
     orb = cv2.ORB_create()
@@ -217,7 +212,7 @@ def preprocess (img, refPoint) :
     # Draw the matches between the template and the image
     # image_matches = cv2.drawMatches(edges, kp1, template, kp2, matches[:15], None, flags=2)
 
-    return matches, kp1, img_dicom,x_cropeTot, y_cropeTot
+    return matches, kp1, img_dicom,x_origin,y_origin
 
 
 def main_orb_detection (img_dicom, refPoint) :
@@ -239,15 +234,27 @@ def main_orb_detection (img_dicom, refPoint) :
     y_cropeTot = prepro[4]
 
     # Matches between template and the image
+    try :
+        refPoint[0][0]
+        print('-------------------------------------------------------------------------------------quequette')
+        point = verifyObject(matches[:15], kp1, refPoint[1])
+        print("main", point)
+        pointX = point[0]
+        pointY = point[1]
+        refPoint = [pointX + x_cropeTot, pointY + y_cropeTot]
+    except:
+        print('-------------------------------------------------------------------------------------')
+        point = verifyObject(matches[:15], kp1, refPoint)
+        print("main", point)
+        pointX = point[0]
+        pointY = point[1]
+        refPoint = [pointX + x_cropeTot, pointY+y_cropeTot]
 
-    point = verifyObject(matches[:15], kp1, refPoint)
-    pointX = point[0]
-    pointY = point[1]
-    refPoint = [pointX  ,pointY ]
-    # refPoint = [pointX +x_cropeTot ,pointY + y_cropeTot]
+
     print("refPoint : ",refPoint)
-    print([pointX +x_cropeTot ,pointY + y_cropeTot])
-    print("main", point)
+    # print([pointX +x_cropeTot ,pointY + y_cropeTot])
+    # print("main", point)
+
     # Draw the rectangle region
     cv2.rectangle(img_dicom, (int(pointX - 50 + x_cropeTot), int(pointY - 50 + y_cropeTot)), (int(pointX + 50.00 + x_cropeTot), int(pointY + 50.00 + y_cropeTot)),
                   (255, 0, 0), 2)
@@ -259,14 +266,4 @@ def main_orb_detection (img_dicom, refPoint) :
 
     return img_dicom,refPoint
 
-# file_name = '/home/camelot/Vidéos/angios/test1.DCM'
-# file_name = '/home/camelot/Vidéos/angios/ARX1.rot.1a49.fr.rothschild.S.4818696.1_00000.DCM'data_dicom = dicom.read_file(file_name)
-# data_dicom = dicom.read_file(file_name)
-#
-# img_dicom = np.array(data_dicom.pixel_array[0],np.uint8)
-# refPoint = [None, None]
-#
-# outputdata, refPoint = main_orb_detection(img_dicom, refPoint)
-# cv2.imshow('image_dilate', outputdata)
-#
 # cv2.waitKey(0)
