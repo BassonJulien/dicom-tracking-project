@@ -2,8 +2,13 @@ import dicom
 import numpy as np
 import cv2
 from matplotlib import pyplot as plt
-
+import preprocess
 # Constante
+# x1_crope = 200
+# x2_crope = 900
+# y1_crope = 260
+# y2_crope = 750
+# crop_constante = 75
 x1_crope = 200
 x2_crope = 810
 y1_crope = 260
@@ -113,106 +118,6 @@ def average(good,kp1,refPoint):
 
     return x, y, size
 
-def preprocess (img, refPoint) :
-
-    # make a copy of the image to not update the original
-    img_dicom = img.copy()
-    cv2.namedWindow('grande', cv2.WINDOW_NORMAL)
-    cv2.imshow('grande', img_dicom)
-    # cv2.resizeWindow('grande', 600, 600)
-
-    # First frame no refpoint
-    if refPoint[0] is  None:
-        print("premiere iteration", refPoint)
-        img_dicom = img_dicom[y1_crope:y2_crope, x1_crope:x2_crope]
-        # Origin is only the normal crop
-        x_origin = x1_crope
-        y_origin = y1_crope
-
-    # Catheter detected
-    else :
-        print("Cree les sous reperes",refPoint)
-        # Normal crope
-
-        try :
-            # try if there are multiple refpoints
-
-            print("3  eme et + it' ")
-            prevPointX =refPoint[0][0]
-            prevPointY = refPoint[0][1]
-            pointX =refPoint[1][0]
-            pointY = refPoint[1][1]
-
-            # Var for crop image, to know the decalage with the previous refPoint
-            pointX1_crop = int(pointX - crop_constante)
-            pointX2_crop = int(pointX + crop_constante)
-            pointY1_crop = int(pointY - crop_constante)
-            pointY2_crop = int(pointY + crop_constante)
-
-
-            x_origin = int(pointX1_crop)
-            y_origin = int(pointY1_crop)
-
-
-        except:
-            # Only one refPoint
-
-            print("2 eme it' ")
-            # prevPointX = 0
-            # prevPointY = 0
-            # Last refPoint detected
-            pointX = refPoint[0]
-            pointY = refPoint[1]
-            # Set the new repere origin
-            x_origin = pointX - crop_constante
-            y_origin = pointY - crop_constante
-
-            # Var for crop image, to know the decalage with the previous refPoint
-            pointX1_crop = int(pointX - crop_constante)
-            pointX2_crop = int(pointX + crop_constante)
-            pointY1_crop = int(pointY - crop_constante)
-            pointY2_crop = int(pointY + crop_constante)
-
-        # Crop image for the orb detection
-        print("cropage",pointY1_crop,pointX1_crop)
-        img_dicom = img_dicom[pointY1_crop:pointY2_crop, pointX1_crop:pointX2_crop]
-        cv2.imshow('image_dilate', img_dicom)
-        cv2.waitKey(0)
-        # To know the coordinates repere origin
-
-        # cv2.imshow('image_dilate', img_dicom)
-        # cv2.waitKey(0)
-
-    # Filtrage to decrease noise
-    img_blur = cv2.medianBlur(img_dicom, 5)
-
-    if refPoint[0] is None:
-        # Detection of edges
-        edges = cv2.Canny(img_blur, 200, 200)
-    else :
-        edges = cv2.Canny(img_blur, 100, 200)
-        # cv2.imshow('image_dilate', edges)
-        # cv2.waitKey(0)
-
-    # Initiate ORB detector
-    orb = cv2.ORB_create()
-
-    # find the keypoints and descriptors with ORB
-    kp1, des1 = orb.detectAndCompute(edges, None)
-    kp2, des2 = orb.detectAndCompute(template, None)
-
-    # create BFMatcher object
-    bf = cv2.BFMatcher(cv2.NORM_HAMMING2, crossCheck=True)
-
-    # Match descriptors.
-    matches = bf.match(des1, des2)
-    # Sort them in the order of their distance.
-    matches = sorted(matches, key=lambda x: x.distance)
-    print("les matches sont : ",matches)
-    # Draw the matches between the template and the image
-    # image_matches = cv2.drawMatches(edges, kp1, template, kp2, matches[:15], None, flags=2)
-
-    return matches, kp1, img_dicom,x_origin,y_origin
 
 
 def main_orb_detection (img_dicom, refPoint) :
@@ -226,25 +131,25 @@ def main_orb_detection (img_dicom, refPoint) :
     #
     # else :
     #     cv2.circle(img_dicom, (circle[0], circle[1]), circle[2], (0, 0, 0), -1)
-    prepro =  preprocess(img_dicom, refPoint)
+    prepro =  preprocess.preprocess(img_dicom, refPoint)
     matches = prepro[0]
     kp1 = prepro[1]
     img = prepro[2]
     x_cropeTot = prepro[3]
     y_cropeTot = prepro[4]
-
+    nbr_matches = 20
     # Matches between template and the image
     try :
         refPoint[0][0]
         print('-------------------------------------------------------------------------------------quequette')
-        point = verifyObject(matches[:15], kp1, refPoint[1])
+        point = verifyObject(matches[:nbr_matches], kp1, refPoint[1])
         print("main", point)
         pointX = point[0]
         pointY = point[1]
         refPoint = [pointX + x_cropeTot, pointY + y_cropeTot]
     except:
         print('-------------------------------------------------------------------------------------')
-        point = verifyObject(matches[:15], kp1, refPoint)
+        point = verifyObject(matches[:nbr_matches], kp1, refPoint)
         print("main", point)
         pointX = point[0]
         pointY = point[1]

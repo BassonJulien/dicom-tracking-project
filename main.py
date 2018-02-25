@@ -52,7 +52,9 @@ import cv2
 import orbDetection
 
 # file_name = '/home/camelot/Vidéos/angios/test1.DCM'
+# file_name = '/home/camelot/Vidéos/angios/ARX1.rot.fa25.fr.rothschild.S.4674027.1_00000.DCM'
 file_name = '/home/camelot/Vidéos/angios/ARX1.rot.1a49.fr.rothschild.S.4818696.1_00000.DCM'
+# file_name = '/home/camelot/Vidéos/angios/ARX1.rot.fc74.fr.rothschild.S.4925457.1_00000.DCM'
 if __name__ == '__main__':
     dicom_converter(file_name)
 

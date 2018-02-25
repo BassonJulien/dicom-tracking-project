@@ -1,19 +1,104 @@
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
+import dicom
 
-img = cv2.imread('dicom.png',0)
-# create a mask
-mask = np.zeros(img.shape[:2], np.uint8)
-mask[395:600, 525:630] = 255
-masked_img = cv2.bitwise_and(img,img,mask = mask)
-# Calculate histogram with mask and without mask
-# Check third argument for mask
-hist_full = cv2.calcHist([img],[0],None,[256],[0,256])
-hist_mask = cv2.calcHist([img],[0],mask,[256],[0,256])
-plt.subplot(221), plt.imshow(img, 'gray')
-plt.subplot(222), plt.imshow(mask,'gray')
-plt.subplot(223), plt.imshow(masked_img, 'gray')
-plt.subplot(224), plt.plot(hist_full), plt.plot(hist_mask)
-plt.xlim([0,256])
-plt.show()
+# Load data and create the matrix of the image
+def valueHistogram(img_dicom):
+
+    # Concentrate only between 100 and 180 value because of it's the color object
+    hist = cv2.calcHist([img_dicom], [0], None, [30], [100, 130])
+    # print(hist)
+    sumValueHist = 0
+    i = 0
+    for el in hist:
+        sumValueHist += el
+        i += 1
+
+    average = sumValueHist / i
+    canny = [200, 200]
+    median_blur = 5
+    kernel_erode = np.ones((1, 1), np.uint8)
+
+    if average [0] < 400 :
+        if 100 < average[0] < 400 :
+            print(
+            "-------------------------------100 < average[0] < 300  ----------------------------------------------------------",
+            average[0])
+            median_blur = 5
+            canny = [230, 230]
+            kernel_erode = np.ones((1, 1), np.uint8)
+
+        elif 50 < average[0] < 100 :
+            print("-------------------------------50 < average[0] < 100  ----------------------------------------------------------",average[0])
+            median_blur = 7
+            canny = [225,225]
+            kernel_erode = np.ones((1, 1), np.uint8)
+
+
+        elif  40 < average[0] < 50  :
+            print("-------------------------------30 < average[0] < 50  ----------------------------------------------------------",average[0])
+
+            canny = [170, 170]
+            median_blur = 9
+            kernel_erode = np.ones((1, 1), np.uint8)
+
+        elif  30 < average[0] < 40  :
+            print("-------------------------------30 < average[0] < 50  ----------------------------------------------------------",average[0])
+
+            canny = [230, 230]
+            median_blur = 7
+            kernel_erode = np.ones((1, 1), np.uint8)
+
+        elif 10 < average[0] < 30 :
+            print("-------------------------------10 < average[0] < 30  ----------------------------------------------------------",average[0])
+
+            canny = [230, 230]
+            median_blur = 7
+            kernel_erode = np.ones((1, 1), np.uint8)
+
+
+        elif 5 < average[0] < 10 :
+            print("-------------------------------5 < average[0] < 10  ----------------------------------------------------------",average[0])
+
+            canny = [150, 150]
+            median_blur = 9
+            kernel_erode = np.ones((1, 1), np.uint8)
+
+        elif  average[0] < 5 :
+            print("------------------------------average[0] < 5  ----------------------------------------------------------",average[0])
+
+            canny = [110, 110]
+            median_blur = 11
+            kernel_erode = np.ones((1, 1), np.uint8)
+        else :
+            print(
+            "-------------------------------100 < average[0] < 300  ----------------------------------------------------------",
+            average[0])
+
+    else :
+        print("------------------------------- average[0] >300  ----------------------------------------------------------",average[0])
+        median_blur = 5
+        canny = [210, 210]
+        kernel_erode = np.ones((1, 1), np.uint8)
+
+    return average[0],median_blur,canny,kernel_erode
+
+
+
+
+
+
+
+
+
+# file_name = '/home/camelot/Vidéos/angios/ARX1.rot.fa25.fr.rothschild.S.4674027.1_00000.DCM'
+
+# file_name = '/home/camelot/Vidéos/angios/ARX1.rot.1a49.fr.rothschild.S.4818696.1_00000.DCM'
+# file_name = '/home/camelot/Vidéos/angios/test1.DCM'
+
+# data_dicom = dicom.read_file(file_name)
+# img_dicom = np.array(data_dicom.pixel_array[10],np.uint8)
+# img_dicom = img_dicom[y1_crope:y2_crope, x1_crope:x2_crope]
+#
+# print(valueHistogram(img_dicom))

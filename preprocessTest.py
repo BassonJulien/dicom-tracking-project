@@ -4,22 +4,24 @@ import cv2
 from matplotlib import pyplot as plt
 
 # Set threshold and maxValue
-thresh = 105
-maxValue = 130
+thresh = 115
+maxValue = 117
+template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/NOISY_TEMPLATE2.png")
 
 # Data header of the dicom file
-data_dicom = dicom.read_file("./dicom/test1.DCM")
+file_name = '/home/camelot/Vidéos/angios/ARX1.rot.fa25.fr.rothschild.S.4674027.1_00000.DCM'
+
+data_dicom = dicom.read_file(file_name)
 # Image of a catheter model
-template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/dicom/testf.png")
 
 
-img_dicom = np.array(data_dicom.pixel_array[10],np.uint8)
-img_dicom = img_dicom[260:700, 200:810]
+img_dicom = np.array(data_dicom.pixel_array[0],np.uint8)
+# img_dicom = img_dicom[260:700, 200:810]
 
-img_dicom = cv2.medianBlur(img_dicom,5)
+img_dicom = cv2.medianBlur(img_dicom,7)
 
 
-ret, img_dicom_thresh = cv2.threshold(img_dicom, thresh, maxValue, cv2.THRESH_BINARY_INV)
+# ret, img_dicom_thresh = cv2.threshold(img_dicom, thresh, maxValue, cv2.THRESH_BINARY_INV)
 
 # Histogram
 # plt.hist(img_dicom.ravel(),256,[0,256]); plt.show()
@@ -30,16 +32,16 @@ ret, img_dicom_thresh = cv2.threshold(img_dicom, thresh, maxValue, cv2.THRESH_BI
 
 
 # Dilatation
-kernel_dilate = np.ones((4,4),np.uint8)
-image_erode = cv2.dilate(img_dicom_thresh, kernel_dilate, iterations = 1)
+kernel_dilate = np.ones((1,1),np.uint8)
+image_erode = cv2.dilate(img_dicom, kernel_dilate, iterations = 1)
 
 # # Erosion
 # kernel_erode = np.ones((1,1),np.uint8)
-# image_erode = cv2.erode(img_dicom_thresh, kernel_erode, iterations = 1)
+# image_erode = cv2.erode(img_dicom, kernel_erode, iterations = 1)
 
 
 # Detection of edges
-edges = cv2.Canny(image_erode,100,200)
+edges = cv2.Canny(image_erode,130,130)
 
 # Initiate ORB detector
 orb = cv2.ORB_create()
@@ -70,7 +72,6 @@ bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
 # plt.show()
 
 
-cv2.imshow('image_brute', img_dicom_thresh)
 cv2.imshow('image_dilate', edges)
 
 cv2.waitKey(0)
