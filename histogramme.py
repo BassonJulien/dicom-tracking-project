@@ -19,14 +19,27 @@ def valueHistogram(img_dicom):
     canny = [200, 200]
     median_blur = 5
     kernel_erode = np.ones((1, 1), np.uint8)
-
     if average [0] < 400 :
-        if 100 < average[0] < 400 :
+        if 200 < average[0] < 400 :
             print(
             "-------------------------------100 < average[0] < 300  ----------------------------------------------------------",
             average[0])
             median_blur = 5
             canny = [230, 230]
+            kernel_erode = np.ones((1, 1), np.uint8)
+        elif 150 < average[0] < 200:
+            print(
+            "-------------------------------100 < average[0] < 150  ----------------------------------------------------------",
+            average[0])
+            median_blur = 5
+            canny = [180, 180]
+            kernel_erode = np.ones((1, 1), np.uint8)
+        elif 100 < average[0] < 150:
+            print(
+            "-------------------------------100 < average[0] < 150  ----------------------------------------------------------",
+            average[0])
+            median_blur = 9
+            canny = [170, 170]
             kernel_erode = np.ones((1, 1), np.uint8)
 
         elif 50 < average[0] < 100 :
@@ -37,14 +50,15 @@ def valueHistogram(img_dicom):
 
 
         elif  40 < average[0] < 50  :
-            print("-------------------------------30 < average[0] < 50  ----------------------------------------------------------",average[0])
+            print("-------------------------------40 < average[0] < 50  ----------------------------------------------------------",average[0])
 
-            canny = [170, 170]
-            median_blur = 9
+
+            canny = [230, 230]
+            median_blur = 7
             kernel_erode = np.ones((1, 1), np.uint8)
 
         elif  30 < average[0] < 40  :
-            print("-------------------------------30 < average[0] < 50  ----------------------------------------------------------",average[0])
+            print("-------------------------------30 < average[0] < 40  ----------------------------------------------------------",average[0])
 
             canny = [230, 230]
             median_blur = 7
@@ -61,15 +75,15 @@ def valueHistogram(img_dicom):
         elif 5 < average[0] < 10 :
             print("-------------------------------5 < average[0] < 10  ----------------------------------------------------------",average[0])
 
-            canny = [150, 150]
-            median_blur = 9
+            canny = [90, 90]
+            median_blur = 11
             kernel_erode = np.ones((1, 1), np.uint8)
 
         elif  average[0] < 5 :
             print("------------------------------average[0] < 5  ----------------------------------------------------------",average[0])
+            median_blur = 7
+            canny = [225, 225]
 
-            canny = [110, 110]
-            median_blur = 11
             kernel_erode = np.ones((1, 1), np.uint8)
         else :
             print(

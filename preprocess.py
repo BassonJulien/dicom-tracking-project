@@ -8,6 +8,7 @@ import histogramme
 crop_constante = 75
 # Image of a catheter model
 template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/templateCANNYEDGES.png")
+# template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/template_video_chelou.png")
 template2 = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/templateCANNYEDGES2.png")
 
 
@@ -92,7 +93,10 @@ def preprocess (img, refPoint) :
         # Crop image for the orb detection
         print("cropage",pointX1_crop, pointY1_crop)
         if pointY1_crop < 0 :
-            pointY1_crop = 0
+            pointY1_crop += 50
+            pointY2_crop += 50
+            img_dicom = img_dicom[pointY1_crop:pointY2_crop, pointX1_crop:pointX2_crop]
+
         else :
             img_dicom = img_dicom[pointY1_crop:pointY2_crop, pointX1_crop:pointX2_crop]
         cv2.imshow('image_dilate', img_dicom)
