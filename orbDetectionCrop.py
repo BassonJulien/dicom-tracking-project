@@ -120,7 +120,7 @@ def average(good,kp1,refPoint):
 
 
 
-def main_orb_detection (img_dicom, refPoint) :
+def main_orb_detection (img_dicom, refPoint,i) :
 
     # if circle is  None:
     #     # detect circles in the image
@@ -131,7 +131,7 @@ def main_orb_detection (img_dicom, refPoint) :
     #
     # else :
     #     cv2.circle(img_dicom, (circle[0], circle[1]), circle[2], (0, 0, 0), -1)
-    prepro =  preprocess.preprocess(img_dicom, refPoint)
+    prepro =  preprocess.preprocess(img_dicom, refPoint, i)
     matches = prepro[0]
     kp1 = prepro[1]
     img = prepro[2]

@@ -5,14 +5,15 @@ from matplotlib import pyplot as plt
 import histogramme
 
 
-crop_constante = 75
-# Image of a catheter model
-template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/templateCANNYEDGES.png")
-# template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/template_video_chelou.png")
-template2 = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/templateCANNYEDGES2.png")
 
 
-def preprocess (img, refPoint) :
+
+def preprocess (img, refPoint, i) :
+    crop_constante = 75
+    # Image of a catheter model
+    template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/templateCANNYEDGES.png")
+    # template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/template_video_chelou.png")
+    template2 = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/templateCANNYEDGES2.png")
 
     # make a copy of the image to not update the original
     img_dicom = img.copy()
@@ -25,13 +26,27 @@ def preprocess (img, refPoint) :
         print("premiere iteration", refPoint)
 
         histValue = histogramme.valueHistogram(img_dicom)[0]
+        print( "la valeur de l'histo est ",histValue)
 
-        if histValue > 300 :
+        if 600 < histValue < 3100 :
 
             x1_crope = 200
             x2_crope = 900
             y1_crope = 260
             y2_crope = 750
+        elif 3100 <histValue < 3200 :
+            template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/teplate3.png")
+            x1_crope = 200
+            x2_crope = 900
+            y1_crope = 260
+            y2_crope = 750
+
+        elif 4810 <histValue < 4820 :
+            # template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/teplate3.png")
+            x1_crope = 200
+            x2_crope = 1100
+            y1_crope = 260
+            y2_crope = 900
 
         else :
             x1_crope = 200
@@ -99,12 +114,15 @@ def preprocess (img, refPoint) :
 
         else :
             img_dicom = img_dicom[pointY1_crop:pointY2_crop, pointX1_crop:pointX2_crop]
-        cv2.imshow('image_dilate', img_dicom)
+        cv2.imshow('image_crop', img_dicom)
         cv2.waitKey(0)
 
 
     # ----------------------------------------------Histogram-------------------------------------------------
     # To determine the difference between the frame and video to manage parameter in segmentation functions
+    numImagetemplate = i
+    # cv2.imwrite('/home/camelot/workspace/dicom-tracking-project/train/templateNoisy2(%d).png' % numImagetemplate, img_dicom)
+    plt.show()
 
     histo = histogramme.valueHistogram(img_dicom)
     MEDIAN_BLUR = histo[1]
@@ -112,8 +130,10 @@ def preprocess (img, refPoint) :
     KERNEL_ERODE = histo[3]
 
     img_blur = cv2.medianBlur(img_dicom, MEDIAN_BLUR)
+    if refPoint[0] is None and 400<histo[0]<600:
+        img_blur = cv2.dilate(img_blur, KERNEL_ERODE, iterations=1)
+
     edges = cv2.Canny(img_blur, CANNY[0], CANNY[1])
-    # edges = cv2.erode(edges, KERNEL_ERODE, iterations=1)
 
 
 
@@ -132,10 +152,20 @@ def preprocess (img, refPoint) :
 
     # Match descriptors.
     matches = bf.match(des1, des2)
+
+    if len(matches) < 3 :
+        print('no object detected so we need to increase the ROI size', matches)
+        img_dicom = img[pointY1_crop-30:pointY2_crop+30, pointX1_crop-30:pointX2_crop+30]
+        img_blur = cv2.medianBlur(img_dicom, MEDIAN_BLUR)
+        edges = cv2.Canny(img_blur, CANNY[0], CANNY[1])
+        kp1, des1 = orb.detectAndCompute(edges, None)
+        matches = bf.match(des1, des2)
+
     # Sort them in the order of their distance.
     matches = sorted(matches, key=lambda x: x.distance)
     print("les matches sont : ",matches)
     # Draw the matches between the template and the image
-    # image_matches = cv2.drawMatches(edges, kp1, template, kp2, matches[:15], None, flags=2)
+    image_matches = cv2.drawMatches(edges, kp1, template, kp2, matches[:15], None, flags=2)
+    cv2.imshow('ORB', image_matches)
 
     return matches, kp1, img_dicom,x_origin,y_origin

@@ -51,12 +51,15 @@ import numpy as np
 import cv2
 import orbDetection
 
-# file_name = '/home/camelot/Vidéos/angios/test1.DCM'
-# file_name = '/home/camelot/Vidéos/angios/test2.DCM'
-# file_name = '/home/camelot/Vidéos/angios/ARX1.rot.1a49.fr.rothschild.S.4818696.1_00000.DCM'
-file_name = '/home/camelot/Vidéos/angios/ARX1.rot.8e1c.fr.rothschild.S.4811827.1_00000.DCM'
-# file_name = '/home/camelot/Vidéos/angios/ARX1.rot.fa25.fr.rothschild.S.4674027.1_00000.DCM'
+# file_name = '/home/camelot/Vidéos/angios/test1.DCM' #marche
+# file_name = '/home/camelot/Vidéos/angios/test2.DCM' #marche
+file_name = '/home/camelot/Vidéos/angios/ARX1.rot.1a49.fr.rothschild.S.4818696.1_00000.DCM' #nope
+# file_name = '/home/camelot/Vidéos/angios/ARX1.rot.8e1c.fr.rothschild.S.4811827.1_00000.DCM'
+# file_name = '/home/camelot/Vidéos/angios/ARX1.rot.fa25.fr.rothschild.S.4674027.1_00000.DCM' #normal photo
 # file_name = '/home/camelot/Vidéos/angios/ARX1.rot.fc74.fr.rothschild.S.4925457.1_00000.DCM'
+# New dicom
+# file_name = '/home/camelot/Vidéos/angios2/ARX1.rot.96ad.fr.rothschild.S.4811821.1_00000.DCM'
+# file_name = '/home/camelot/Vidéos/angios2/ARX1.rot.826d.fr.rothschild.S.4818854.1_00000.DCM' #marche
 if __name__ == '__main__':
     dicom_converter(file_name)
 

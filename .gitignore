@@ -5,3 +5,12 @@
 /myenv
 /__pycache__
 /.git
+/__pycache__
+/imagesRapport
+/train
+/trainArtefacte
+/videos
+*.h5py
+/badResult
+/goodResult
+/testData
