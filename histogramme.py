@@ -33,7 +33,7 @@ def valueHistogram(img_dicom):
                 "-------------------------------200 < average[0] < 400  ----------------------------------------------------------",
                 average[0])
             median_blur = 5
-            canny = [230, 230]
+            canny = [220, 230]
             kernel_erode = np.ones((1, 1), np.uint8)
 
         elif 150 < average[0] < 200:
@@ -62,8 +62,8 @@ def valueHistogram(img_dicom):
             print("-------------------------------40 < average[0] < 50  ----------------------------------------------------------",average[0])
 
 
-            canny = [230, 230]
-            median_blur = 7
+            canny = [100, 230]
+            median_blur = 11
             kernel_erode = np.ones((1, 1), np.uint8)
 
         elif  30 < average[0] < 40  :
@@ -74,36 +74,57 @@ def valueHistogram(img_dicom):
             kernel_erode = np.ones((1, 1), np.uint8)
 
 
-        elif 10 < average[0] < 30 :
+        elif 20 < average[0] < 30 :
             print("-------------------------------10 < average[0] < 30  ----------------------------------------------------------",average[0])
 
             canny = [0, 100]
             median_blur = 17
+            kernel_erode = np.ones((1, 1), np.uint8)
+        elif 15 < average[0] < 20:
+            print(
+            "-------------------------------10 < average[0] < 30  ----------------------------------------------------------",
+            average[0])
+
+            canny = [0, 100]
+            median_blur = 13
+            kernel_erode = np.ones((1, 1), np.uint8)
+        elif 10 < average[0] < 15 :
+            print("-------------------------------10 < average[0] < 30  ----------------------------------------------------------",average[0])
+
+            canny = [65, 105]
+            median_blur = 11
             kernel_erode = np.ones((1, 1), np.uint8)
 
 
         elif 5 < average[0] < 10 :
             print("-------------------------------5 < average[0] < 10  ----------------------------------------------------------",average[0])
 
-            canny = [50, 90]
+            canny = [50, 100]
             median_blur = 11
             kernel_erode = np.ones((1, 1), np.uint8)
 
         elif  3 < average[0] < 5 :
             print("------------------------------3 < average[0] < 5  ----------------------------------------------------------",average[0])
-            median_blur = 7
-            canny = [225, 225]
+            median_blur = 11
+            canny = [20, 70]
 
             kernel_erode = np.ones((1, 1), np.uint8)
 
         elif 0 < average[0] < 3 :
             print("------------------------------0 < average[0] < 3  ----------------------------------------------------------",average[0])
-            median_blur = 7
-            canny = [90, 90]
+            median_blur = 27
+            canny = [0, 60]
 
-            kernel_erode = np.ones((1, 1), np.uint8)
+            kernel_erode = np.ones((2, 2), np.uint8)
 
     elif 1800 < average[0] < 1900 :
+        print(
+            "------------------------------- 1800 < average[0] >1900  ----------------------------------------------------------",
+            average[0])
+        median_blur = 21
+        canny = [30, 100]
+        kernel_erode = np.ones((1, 1), np.uint8)
+    elif 1000 < average[0] < 1100:
         print(
             "------------------------------- 1800 < average[0] >1900  ----------------------------------------------------------",
             average[0])

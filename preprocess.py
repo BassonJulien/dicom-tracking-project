@@ -11,15 +11,12 @@ import histogramme
 def preprocess (img, refPoint, i) :
     crop_constante = 75
     # Image of a catheter model
-    template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/templateCANNYEDGES.png")
-    # template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/template_video_chelou.png")
-    template2 = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/templateCANNYEDGES2.png")
+    template = cv2.imread("./template/templateCANNYEDGES.png")
 
     # make a copy of the image to not update the original
     img_dicom = img.copy()
     cv2.namedWindow('grande', cv2.WINDOW_NORMAL)
     cv2.imshow('grande', img_dicom)
-    # cv2.resizeWindow('grande', 600, 600)
 
     # ---------------First frame no refpoint---------------------------------------------------------------------------
     if refPoint[0] is  None:
@@ -131,6 +128,9 @@ def preprocess (img, refPoint, i) :
 
     img_blur = cv2.medianBlur(img_dicom, MEDIAN_BLUR)
     if refPoint[0] is None and 400<histo[0]<600:
+        img_blur = cv2.dilate(img_blur, KERNEL_ERODE, iterations=1)
+
+    if  0<histo[0]<5:
         img_blur = cv2.dilate(img_blur, KERNEL_ERODE, iterations=1)
 
     edges = cv2.Canny(img_blur, CANNY[0], CANNY[1])

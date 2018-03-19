@@ -41,7 +41,4 @@ def dicom_converter(file_name):
     writer.close()
 
 
-# data_dicom = dicom.read_file(file_name)
-#     img_dicom = np.array(data_dicom.pixel_array[0], np.uint8)
-#     orbDetection.main_orb_detection(img_dicom)
-#     dicom_converter("cc")
+
