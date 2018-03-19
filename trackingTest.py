@@ -6,7 +6,7 @@ from plotPoints import draw_trajectory, lissage
 
 def preprocess(frame):
 
-    # frame = cv2.medianBlur(frame, 5)
+    frame = cv2.medianBlur(frame, 5)
     # ret, frame = cv2.threshold(frame, 114, 180, cv2.THRESH_BINARY_INV)
 
     # Dilatation
@@ -47,7 +47,7 @@ def main():
             tracker = cv2.TrackerGOTURN_create()
 
     # Read video
-    video = cv2.VideoCapture("videos/dicom5.avi")
+    video = cv2.VideoCapture("videos/dicom1.avi")
 
     # Exit if video not opened.
     if not video.isOpened():
@@ -138,4 +138,11 @@ for i in range(0, len(x)):
 
 
 draw_trajectory(listeXY)
-lissage(listeXY)
+lissage(listeXY, 5)
+lissage(listeXY, 15)
+lissage(listeXY, 35)
+lissage(listeXY, 55)
+lissage(listeXY, 75)
+lissage(listeXY, 750)
+lissage(listeXY, 7500)
+

@@ -21,8 +21,8 @@ def draw_trajectory(points):
     cv2.waitKey(0)
 
 
-def lissage(points):
-    xvals, yvals = bezier_curve(points, nTimes=100)
+def lissage(points, nTimes):
+    xvals, yvals = bezier_curve(points, nTimes)
 
     listePoints = list()
 

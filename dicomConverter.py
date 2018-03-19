@@ -16,15 +16,19 @@ from matplotlib import pyplot as plt
 def dicom_converter(file_name):
     ds = dicom.read_file(file_name)
     writer = skvideo.io.FFmpegWriter('./videos/uint8.avi')
-    refPoint = [None,None]
-    for j in range(0, ds.pixel_array.shape[0]):
-        frame = ds.pixel_array[j]
-        outputdata = frame.astype(np.uint8)
-        outputdata,refPoint = orbDetection.main_orb_detection(outputdata,refPoint)
+    refPoint = [None, None]
 
-
-        writer.writeFrame(outputdata)
-    writer.close()
+    print(ds)
+    # NumberOfSlices
+    # NumberOfFrames
+    # for j in range(0, ds.pixel_array.shape[0]):
+    #     frame = ds.pixel_array[0]
+    #     outputdata = frame.astype(np.uint8)
+    #     outputdata,refPoint = orbDetection.main_orb_detection(outputdata,refPoint)
+    #
+    #
+    #     writer.writeFrame(outputdata)
+    # writer.close()
 
 
 # data_dicom = dicom.read_file(file_name)

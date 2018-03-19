@@ -11,7 +11,7 @@ pts = [(15, 15), (300, 50), (100, 500), (686, 324), (786, 374), (886, 474), (986
 
 # dicom_converter(from_filename)
 
-dicom_converter("")
+
 
 
 
@@ -51,9 +51,10 @@ import numpy as np
 import cv2
 import orbDetection
 
-file_name = '/home/camelot/Vidéos/angios/test1.DCM'
 if __name__ == '__main__':
-    dicom_converter(file_name)
+    # dicom_converter(file_name)
+
+    dicom_converter("/home/julien/Images/DICOM/ARX1.rot.7d6a.fr.rothschild.S.4674046.1_00000.DCM")
 
     # data_dicom = dicom.read_file(file_name)
     # img_dicom = np.array(data_dicom.pixel_array[0], np.uint8)
