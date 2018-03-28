@@ -37,7 +37,7 @@ print('Output classes : ', classes)
 # plt.title("Ground Truth : {}".format(test_Y[0]))
 # plt.show()
 
-train_X = train_X.reshape(-1, 28,28, 1)
+    train_X = train_X.reshape(-1, 28,28, 1)
 test_X = test_X.reshape(-1, 28,28, 1)
 train_X.shape, test_X.shape
 train_X = train_X.astype('float32')

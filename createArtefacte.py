@@ -35,7 +35,7 @@ def create_artefacte(file_name):
             x_origin = 75
             y_origin += 50
         cv2.imwrite(
-            '/home/camelot/workspace/dicom-tracking-project/testData/artefacteNoisy2(%d).png' % j,
+            '/home/camelot/workspace/dicom-tracking-project/trainArtefacte/artefacte3(%d).png' % j,
             img_dicom)
 
 
@@ -46,6 +46,7 @@ def create_artefacte(file_name):
 # file_name = '/home/camelot/Vidéos/angios/test1.DCM'
 # file_name = '/home/camelot/Vidéos/angios/ARX1.rot.1a49.fr.rothschild.S.4818696.1_00000.DCM'
 # file_name = '/home/camelot/Vidéos/angios/ARX1.rot.8e1c.fr.rothschild.S.4811827.1_00000.DCM'
+file_name = '/home/camelot/Vidéos/angios2/ARX1.rot.826d.fr.rothschild.S.4818854.1_00000.DCM' #marche
 
 
 create_artefacte(file_name)

@@ -133,6 +133,9 @@ def main_orb_detection (img_dicom, refPoint,i) :
     cv2.rectangle(img_dicom, (int(pointX - 50 + x_cropeTot), int(pointY - 50 + y_cropeTot)), (int(pointX + 50.00 + x_cropeTot), int(pointY + 50.00 + y_cropeTot)),
                   (255, 0, 0), 2)
 
+    cv2.namedWindow('original image ', cv2.WND_PROP_FULLSCREEN)
+    cv2.imshow('original image', img_dicom)
+
 
     return img_dicom,refPoint
 

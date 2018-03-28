@@ -8,6 +8,7 @@ def valueHistogram(img_dicom):
 
     # Concentrate only between 100 and 180 value because of it's the color object
     hist = cv2.calcHist([img_dicom], [0], None, [30], [100, 130])
+
     # print(hist)
     sumValueHist = 0
     i = 0
@@ -19,6 +20,14 @@ def valueHistogram(img_dicom):
     canny = [200, 200]
     median_blur = 5
     kernel_erode = np.ones((1, 1), np.uint8)
+    # fig = plt.figure(figsize=(1, 2))
+    # fig.add_subplot(1, 2, 1)
+    # plt.title("Original image")
+    # plt.imshow(img_dicom, cmap='gray')
+    # fig.add_subplot(1, 2, 2)
+    # plt.title('Histogram, average = %i '%average)
+    # plt.hist(img_dicom.ravel(), 256, [100, 130])
+    # plt.show()
     if average [0] < 600 :
 
         if 400 < average[0] < 600 :
