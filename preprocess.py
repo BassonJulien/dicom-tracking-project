@@ -12,16 +12,9 @@ def preprocess (img, refPoint, i) :
     crop_constante = 75
     # Image of a catheter model
     template = cv2.imread("./template/templateCANNYEDGES.png")
-    # template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/template_video_chelou.png")
-    template2 = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/templateCANNYEDGES2.png")
 
     # make a copy of the image to not update the original
     img_dicom = img.copy()
-
-
-    # cv2.namedWindow('grande', cv2.WINDOW_NORMAL)
-    # cv2.imshow('grande', img_dicom)
-    # cv2.resizeWindow('grande', 600, 600)
 
     # ---------------First frame no refpoint---------------------------------------------------------------------------
     if refPoint[0] is  None:
@@ -87,13 +80,11 @@ def preprocess (img, refPoint, i) :
             x_origin = int(pointX1_crop)
             y_origin = int(pointY1_crop)
 
-
-        except:
+        except Exception as e:
+            print(e)
             # Only one refPoint
-
             print("2 eme it' ")
-            # prevPointX = 0
-            # prevPointY = 0
+
             # Last refPoint detected
             pointX = refPoint[0]
             pointY = refPoint[1]
@@ -116,17 +107,15 @@ def preprocess (img, refPoint, i) :
 
         else :
             img_dicom = img_dicom[pointY1_crop:pointY2_crop, pointX1_crop:pointX2_crop]
-
-
-        # cv2.imshow('image_crop', img_dicom)
-        # cv2.waitKey(0)
+        cv2.imshow('image_crop', img_dicom)
+        cv2.waitKey(0)
 
 
     # ----------------------------------------------Histogram-------------------------------------------------
     # To determine the difference between the frame and video to manage parameter in segmentation functions
     numImagetemplate = i
-    # cv2.imwrite('/home/camelot/workspace/dicom-tracking-project/train/templateNoisy2(%d).png' % numImagetemplate, img_dicom)
-    # plt.show()
+    # cv2.imwrite('/home/camelot/workspace/dicom-tracking-project/train/templates2(%d).png' % numImagetemplate, img_dicom)
+    plt.show()
 
     histo = histogramme.valueHistogram(img_dicom)
     MEDIAN_BLUR = histo[1]
@@ -135,6 +124,9 @@ def preprocess (img, refPoint, i) :
 
     img_blur = cv2.medianBlur(img_dicom, MEDIAN_BLUR)
     if refPoint[0] is None and 400<histo[0]<600:
+        img_blur = cv2.dilate(img_blur, KERNEL_ERODE, iterations=1)
+
+    if  0<histo[0]<5:
         img_blur = cv2.dilate(img_blur, KERNEL_ERODE, iterations=1)
 
     edges = cv2.Canny(img_blur, CANNY[0], CANNY[1])
@@ -171,5 +163,7 @@ def preprocess (img, refPoint, i) :
     # Draw the matches between the template and the image
     image_matches = cv2.drawMatches(edges, kp1, template, kp2, matches[:15], None, flags=2)
     cv2.imshow('ORB', image_matches)
-    cv2.waitKey(0)
+    cv2.imshow('blur', img_blur)
+    cv2.imshow('Template', template)
+
     return matches, kp1, img_dicom,x_origin,y_origin

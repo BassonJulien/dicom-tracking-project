@@ -11,14 +11,19 @@ imagePathCatheter = glob.glob(imageFolderPathCatheter + '/*.png')
 def loading () :
     data_x = []
     data_y = []
+    dataArte_x = []
+    dataArte_y = []
+
+    dataTrain_x = []
+    dataTrain_y = []
 
     # Insert train artefact set images
     for path in imagePathArtefact :
         img = np.array(Image.open(path))
         # print(img)
         if img.shape ==(150,150):
-            data_x.append(img)
-            data_y.append(0)
+            dataArte_x.append(img)
+            dataArte_y.append(0)
 
 
     # Insert train catheter set images
@@ -26,10 +31,18 @@ def loading () :
         img = np.array(Image.open(path))
         # print(img)
         if img.shape ==(150,150):
-            data_x.append(img)
-            data_y.append(1)
+            dataTrain_x.append(img)
+            dataTrain_y.append(1)
 
-
+    for i in range(0, len(dataTrain_x)):
+        if i % 2 == 0:
+            if img.shape == (150, 150):
+                data_x.append(dataTrain_x[i])
+                data_y.append(dataTrain_y[i])
+        else:
+            if img.shape == (150, 150):
+                data_x.append(dataArte_x[i])
+                data_y.append(dataArte_y[i])
 
     # 80% of the dataset for training
     split_percentage = 0.80
@@ -50,33 +63,45 @@ def loading () :
 
     return X_train, y_train, X_test, y_test
 
-imageFolderPathCatheter = '/home/camelot/workspace/dicom-tracking-project/testData/'
-imageFolderPathArtefact = '/home/camelot/workspace/dicom-tracking-project/testData/'
-imagePathArtefact = glob.glob(imageFolderPathArtefact + '/*.png')
-imagePathCatheter = glob.glob(imageFolderPathCatheter + '/*.png')
+imageFolderPathCatheterTest = '/home/camelot/workspace/dicom-tracking-project/testData/'
+imageFolderPathArtefactTest = '/home/camelot/workspace/dicom-tracking-project/testDataArte/'
+imagePathArtefactTest = glob.glob(imageFolderPathArtefactTest + '/*.png')
+imagePathCatheterTest = glob.glob(imageFolderPathCatheterTest + '/*.png')
 
-def loadingTest () :
+def loadingTest (img) :
     data_x = []
     data_y = []
+    dataArte_x = []
+    dataArte_y = []
+
+    dataTrain_x = []
+    dataTrain_y = []
 
     # Insert train artefact set images
-    for path in imagePathArtefact :
+    for path in imagePathArtefact:
         img = np.array(Image.open(path))
         # print(img)
-        if img.shape ==(150,150):
-            data_x.append(img)
-            data_y.append(0)
-
+        if img.shape == (150, 150):
+            dataArte_x.append(img)
+            dataArte_y.append(0)
 
     # Insert train catheter set images
-    for path in imagePathCatheter :
+    for path in imagePathCatheter:
         img = np.array(Image.open(path))
         # print(img)
-        if img.shape ==(150,150):
-            data_x.append(img)
-            data_y.append(1)
+        if img.shape == (150, 150):
+            dataTrain_x.append(img)
+            dataTrain_y.append(1)
 
-
+    for i in range(0, len(dataTrain_x)):
+        if i % 2 == 0:
+            if img.shape == (150, 150):
+                data_x.append(dataTrain_x[i])
+                data_y.append(dataTrain_y[i])
+        else:
+            if img.shape == (150, 150):
+                data_x.append(dataArte_x[i])
+                data_y.append(dataArte_y[i])
 
     # 80% of the dataset for training
     split_percentage = 0.80
@@ -96,8 +121,5 @@ def loadingTest () :
     y_test = np.array(data_y[split:])
 
     return X_train, y_train, X_test, y_test
-
-
-
 
 # temp = np.array([[[np.array(lignes)] for lignes in img]for img in im_array])

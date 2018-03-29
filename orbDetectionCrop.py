@@ -3,20 +3,7 @@ import numpy as np
 import cv2
 from matplotlib import pyplot as plt
 import preprocess
-# Constante
-# x1_crope = 200
-# x2_crope = 900
-# y1_crope = 260
-# y2_crope = 750
-# crop_constante = 75
-x1_crope = 200
-x2_crope = 810
-y1_crope = 260
-y2_crope = 750
-crop_constante = 100
-# Image of a catheter model
-template = cv2.imread("template/templateCANNYEDGES.png")
-template2 = cv2.imread("template/templateCANNYEDGES2.png")
+
 
 # check if the object is the catheter
 def verifyObject(good,kp1,refPoint):
@@ -26,8 +13,6 @@ def verifyObject(good,kp1,refPoint):
     size_good = np.shape(good)[0]
     x = point[0]
     y = point[1]
-
-    # print("refPoint : ",refPoint)
 
     # Test for each matches points
     for i in range(0,size_good-2):
@@ -101,9 +86,6 @@ def average(good,kp1,refPoint):
                 print("rentre pas")
                 refY = refPoint[1]
                 refX = refPoint[0]
-                # sumX += refPoint[0]
-                # sumY += refPoint[1]
-                # size += 1
 
         else :
             if x1 < refX + 50 and y1 < refY + 50 and x1 > refX - 50 and y1 > refY - 50:
@@ -122,15 +104,6 @@ def average(good,kp1,refPoint):
 
 def main_orb_detection (img_dicom, refPoint,i) :
 
-    # if circle is  None:
-    #     # detect circles in the image
-    #     circle = houghTransform.findCircle(img_dicom)
-    #     cv2.circle(img_dicom, (circle[0], circle[1]), circle[2], (0, 0, 0), -1)
-    #     cv2.imshow('edges', img_dicom)
-    #
-    #
-    # else :
-    #     cv2.circle(img_dicom, (circle[0], circle[1]), circle[2], (0, 0, 0), -1)
     prepro =  preprocess.preprocess(img_dicom, refPoint, i)
     matches = prepro[0]
     kp1 = prepro[1]
@@ -141,14 +114,12 @@ def main_orb_detection (img_dicom, refPoint,i) :
     # Matches between template and the image
     try :
         refPoint[0][0]
-        print('-------------------------------------------------------------------------------------quequette')
         point = verifyObject(matches[:nbr_matches], kp1, refPoint[1])
         print("main", point)
         pointX = point[0]
         pointY = point[1]
         refPoint = [pointX + x_cropeTot, pointY + y_cropeTot]
     except:
-        print('-------------------------------------------------------------------------------------')
         point = verifyObject(matches[:nbr_matches], kp1, refPoint)
         print("main", point)
         pointX = point[0]
@@ -157,17 +128,15 @@ def main_orb_detection (img_dicom, refPoint,i) :
 
 
     print("refPoint : ",refPoint)
-    # print([pointX +x_cropeTot ,pointY + y_cropeTot])
-    # print("main", point)
 
     # Draw the rectangle region
     cv2.rectangle(img_dicom, (int(pointX - 50 + x_cropeTot), int(pointY - 50 + y_cropeTot)), (int(pointX + 50.00 + x_cropeTot), int(pointY + 50.00 + y_cropeTot)),
                   (255, 0, 0), 2)
 
-
-
-    # plt.imshow(image_matches), plt.show()
+    cv2.namedWindow('original image ', cv2.WND_PROP_FULLSCREEN)
     cv2.imshow('original image', img_dicom)
-    cv2.waitKey(0)
+
+
     return img_dicom,refPoint
 
+# cv2.waitKey(0)
