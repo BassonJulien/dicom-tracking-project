@@ -2,6 +2,7 @@ import dicom
 import numpy as np
 import skvideo.io
 import orbDetection
+import orbDetectionCrop
 import PIL
 import cv2
 from matplotlib import pyplot as plt
@@ -16,19 +17,29 @@ from matplotlib import pyplot as plt
 def dicom_converter(file_name):
     ds = dicom.read_file(file_name)
     writer = skvideo.io.FFmpegWriter('./videos/uint8.avi')
-    refPoint = [None, None]
+    refPoint = [None,None]
+    refPointTab = [None]
+    print("taille tab",ds.pixel_array.shape[0])
+    for j in range(0, ds.pixel_array.shape[0]):
+        print("nouvellle iteration")
+        frame = ds.pixel_array[j]
+        outputdata = frame.astype(np.uint8)
+        # outputdata,refPoint = orbDetection.main_orb_detection(outputdata,refPoint)
+        if refPointTab[0] is None or len(refPointTab) < 2 :
+            outputdata,refPoint = orbDetectionCrop.main_orb_detection(outputdata,refPoint,j)
+            if refPointTab[0] is None :
+                refPointTab = [refPoint]
+            else :
+                refPointTab.append(refPoint)
 
-    print(ds)
-    # NumberOfSlices
-    # NumberOfFrames
-    # for j in range(0, ds.pixel_array.shape[0]):
-    #     frame = ds.pixel_array[0]
-    #     outputdata = frame.astype(np.uint8)
-    #     outputdata,refPoint = orbDetection.main_orb_detection(outputdata,refPoint)
-    #
-    #
-    #     writer.writeFrame(outputdata)
-    # writer.close()
+        if len(refPointTab) >= 2 :
+            # Send the two last refPoints
+            outputdata,refPoint = orbDetectionCrop.main_orb_detection(outputdata,refPointTab[j-1:],j)
+            refPointTab.append(refPoint)
+        print("refpointab",refPointTab)
+        writer.writeFrame(outputdata)
+    writer.close()
+    return refPointTab
 
 
 # data_dicom = dicom.read_file(file_name)

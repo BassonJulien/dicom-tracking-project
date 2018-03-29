@@ -1,63 +1,35 @@
 # import tkinter.filedialog
 from dicomConverter import dicom_converter
-from plotPoints import draw_trajectory, lissage
+from draw_trajectory.tridTrajectory import draw3DTrajectorySmooth
+
+file_name1 = '/home/julien/Images/DICOM/ARX1.rot.fa25.fr.rothschild.S.4674027.1_00000.DCM'
+file_name2 = '/home/julien/Images/DICOM/ARX1.rot.7d6a.fr.rothschild.S.4674046.1_00000.DCM'
 
 
-pts = [(15, 15), (300, 50), (100, 500), (686, 324), (786, 374), (886, 474), (986, 543)]
-
-
-# from_filename = tkinter.filedialog.askopenfilename()
-# if from_filename != ():
-
-# dicom_converter(from_filename)
-
-
-
-
-
-
-# draw_trajectory(pts)
-# ptx = [12, 100, 686, 786, 886, 986]
-# pty = [15, 500, 324, 374, 474, 543]
-# pts2 = [(100, 257), (686, 412), (786, 349), (886, 424)]
-
-# from plotPoints import draw_trajectory, lissage
-#
-#
-# pts = [(15, 15), (300, 50), (100, 500), (686, 324), (786, 374), (886, 474), (986, 543)]
-#
-#
-# # from_filename = tkinter.filedialog.askopenfilename()
-# # if from_filename != ():
-#
-# # dicom_converter(from_filename)
-#
-# dicom_converter("")
-#
-#
-#
-#
-# draw_trajectory(pts)
-# ptx = [12, 100, 686, 786, 886, 986]
-# pty = [15, 500, 324, 374, 474, 543]
-# pts2 = [(100, 257), (686, 412), (786, 349), (886, 424)]
-#
-# # draw_trajectory(pts)
-# # liste = lissage(pts, 1)
-# #
-# # draw_trajectory(liste)
-import dicom
-import numpy as np
-import cv2
-import orbDetection
+file_name3 = '/home/julien/Images/DICOM/ARX1.rot.1a4b.fr.rothschild.P.2104937.1_00000.DCM'
 
 if __name__ == '__main__':
-    # dicom_converter(file_name)
+    # tab1 = dicom_converter(file_name3)
 
-    dicom_converter("/home/julien/Images/DICOM/ARX1.rot.7d6a.fr.rothschild.S.4674046.1_00000.DCM")
 
-    # data_dicom = dicom.read_file(file_name)
-    # img_dicom = np.array(data_dicom.pixel_array[0], np.uint8)
-    # orbDetection.main_orb_detection(img_dicom)
-    # dicom_converter("cc")
+    tab1 = dicom_converter(file_name1)
+    tab2 = dicom_converter(file_name2)
 
+    # draw2DTrajectorySmooth(tab1)
+
+
+    draw3DTrajectorySmooth(tab1, tab2)
+    #
+    # listTab1X = list()
+    # listTab2X = list()
+    # listTab1Y = list()
+    # listTab2Y = list()
+    #
+    # for i in range(0, len(tab1)):
+    #     listTab1X.append(tab1[i][0])
+    #     listTab2X.append(tab2[i][0])
+    #     listTab1Y.append(tab1[i][1])
+    #     listTab2Y.append(tab2[i][1])
+    #
+
+    # draw3DTrajectory(listTab1X, listTab2X, listTab1Y, listTab2Y)

@@ -1,7 +1,11 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import dicom
 import numpy as np
 import cv2
 from matplotlib import pyplot as plt
+
 
 # Constante
 x1_crope = 200
@@ -9,15 +13,16 @@ x2_crope = 810
 y1_crope = 260
 y2_crope = 700
 
+file_name = '/home/camelot/Vidéos/angios/test1.DCM'
+
 # Data header of the dicom file
-data_dicom = dicom.read_file("./dicom/test1.DCM")
+data_dicom = dicom.read_file(file_name)
 
 # Image of a catheter model
-template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/dicom/templateCANNYEDGES.png")
-template2 = cv2.imread("/home/camelot/workspace/dicom-tracking-project/dicom/templateCANNYEDGES2.png")
+template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/templateCANNYEDGES.png")
 
 # Create matrix image and crope it
-img_dicom = np.array(data_dicom.pixel_array[201],np.uint8)
+img_dicom = np.array(data_dicom.pixel_array[5],np.uint8)
 img_dicom = img_dicom[y1_crope:y2_crope, x1_crope:x2_crope]
 
 # Filtrage to decrease noise

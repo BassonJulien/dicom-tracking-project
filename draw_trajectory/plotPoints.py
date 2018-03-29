@@ -1,7 +1,5 @@
 import cv2
 import numpy as np
-import bezier
-from matplotlib import pyplot as plt
 from scipy.misc import comb
 
 # Draw the trajectory in 2D
