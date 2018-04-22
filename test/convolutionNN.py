@@ -1,17 +1,14 @@
-from keras.datasets import fashion_mnist
 import numpy as np
 from keras.utils import to_categorical
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import keras
-from keras.models import Sequential,Input,Model
+from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
-from keras.layers.normalization import BatchNormalization
 from keras.layers.advanced_activations import LeakyReLU
-import cv2
 
-import loadimages
+from neuron_process import loadimages
 
 # Just disables the warning, doesn't enable AVX/FMA
 import os

@@ -1,11 +1,6 @@
-import dicom
-import numpy as np
 import cv2
 from matplotlib import pyplot as plt
-import histogramme
-
-
-
+from orb_process import histogramme
 
 
 def preprocess (img, refPoint, i) :

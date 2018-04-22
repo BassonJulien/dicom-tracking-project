@@ -1,10 +1,8 @@
-import dicom
 import numpy as np
 import cv2
-from matplotlib import pyplot as plt
-import histogramme
-import orbDetectionCrop
-import preprocess
+import sys
+sys.path.append('../')
+from orb_process import orbDetectionCrop, preprocess
 
 width_window = 300
 crop_constante = 75
@@ -139,6 +137,8 @@ def detection_process (img_dicom, refPoint,i,model) :
     # Draw the rectangle region
     cv2.rectangle(img_dicom, (int(refPoint[0] - 50 ), int(refPoint[1]  -50 )), (int(refPoint[0] + 50.00), int( 50 + refPoint[1])),
                   (255, 0, 0), 2)
+    cv2.circle(img_dicom, (int(pointX  + x_cropeTot),int(pointY  + y_cropeTot)), 5, (255, 255, 0), -1)  # draw center
+
 
     cv2.namedWindow('original image ', cv2.WND_PROP_FULLSCREEN)
     cv2.imshow('original image', img_dicom)

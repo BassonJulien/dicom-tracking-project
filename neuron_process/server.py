@@ -1,7 +1,6 @@
 from flask import Flask, request, render_template
 from flask_cors import CORS
 from neuron_main import dicom_converter
-from catheter_predictor import CatheterPredictor
 
 app = Flask(__name__)
 CORS(app)

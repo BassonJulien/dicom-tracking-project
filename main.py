@@ -1,6 +1,5 @@
 # import tkinter.filedialog
 from dicomConverter import dicom_converter
-from draw_trajectory.tridTrajectory import draw3DTrajectorySmooth
 
 file_name1 = '/home/julien/Images/DICOM/ARX1.rot.fa25.fr.rothschild.S.4674027.1_00000.DCM'
 file_name2 = '/home/julien/Images/DICOM/ARX1.rot.7d6a.fr.rothschild.S.4674046.1_00000.DCM'
@@ -33,12 +32,8 @@ file_name3 = '/home/julien/Images/DICOM/ARX1.rot.1a4b.fr.rothschild.P.2104937.1_
 # # liste = lissage(pts, 1)
 # #
 # # draw_trajectory(liste)
-import dicom
-import numpy as np
-import cv2
-import orbDetection
 
-file_name = '/home/camelot/Vidéos/angios/test1.DCM' #marche
+# file_name = '/home/camelot/Vidéos/angios/test1.DCM' #marche
 # file_name = '/home/camelot/Vidéos/angios/test2.DCM' #marche
 # file_name = '/home/camelot/Vidéos/angios/ARX1.rot.1a49.fr.rothschild.S.4818696.1_00000.DCM' #marche
 # file_name = '/home/camelot/Vidéos/angios/ARX1.rot.8e1c.fr.rothschild.S.4811827.1_00000.DCM' #marche
@@ -48,19 +43,19 @@ file_name = '/home/camelot/Vidéos/angios/test1.DCM' #marche
 # file_name = '/home/camelot/Vidéos/angios2/ARX1.rot.96ad.fr.rothschild.S.4811821.1_00000.DCM'
 # file_name = '/home/camelot/Vidéos/angios2/ARX1.rot.826d.fr.rothschild.S.4818854.1_00000.DCM' #marche
 # file_name = '/home/camelot/Vidéos/angios2/ARX1.rot.1211.fr.rothschild.S.4676231.1_00000.DCM' #nope
-# file_name = '/home/camelot/Vidéos/angios2/ARX1.rot.1a4b.fr.rothschild.P.2104937.1_00000.DCM' #marche
+file_name = '/home/camelot/Vidéos/angios2/ARX1.rot.1a4b.fr.rothschild.P.2104937.1_00000.DCM' #marche
 # file_name = '/home/camelot/Vidéos/angios2/ARX1.rot.cdc1.fr.rothschild.P.2104952.1_00000.DCM'
 if __name__ == '__main__':
     # tab1 = dicom_converter(file_name3)
-
-
-    tab1 = dicom_converter(file_name1)
-    tab2 = dicom_converter(file_name2)
-
-    # draw2DTrajectorySmooth(tab1)
-
-
-    draw3DTrajectorySmooth(tab1, tab2)
+    dicom_converter(file_name)
+    #
+    # tab1 = dicom_converter(file_name1)
+    # tab2 = dicom_converter(file_name2)
+    #
+    # # draw2DTrajectorySmooth(tab1)
+    #
+    #
+    # draw3DTrajectorySmooth(tab1, tab2)
     #
     # listTab1X = list()
     # listTab2X = list()

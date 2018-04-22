@@ -1,9 +1,6 @@
-import dicom
 import numpy as np
 import cv2
-from matplotlib import pyplot as plt
-import preprocess
-
+from orb_process import preprocess
 
 # check if the object is the catheter
 def verifyObject(good,kp1,refPoint):
@@ -132,6 +129,7 @@ def main_orb_detection (img_dicom, refPoint,i) :
     # Draw the rectangle region
     cv2.rectangle(img_dicom, (int(pointX - 50 + x_cropeTot), int(pointY - 50 + y_cropeTot)), (int(pointX + 50.00 + x_cropeTot), int(pointY + 50.00 + y_cropeTot)),
                   (255, 0, 0), 2)
+    cv2.circle(img_dicom, (int(pointX  + x_cropeTot),int(pointY  + y_cropeTot)), 5, (255, 255, 0), -1)  # draw center
 
     cv2.namedWindow('original image ', cv2.WND_PROP_FULLSCREEN)
     cv2.imshow('original image', img_dicom)

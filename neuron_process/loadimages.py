@@ -3,8 +3,8 @@ import numpy as np
 import glob
 
 # Artefact and catheter folder
-imageFolderPathCatheter = '/home/camelot/workspace/dicom-tracking-project/train/'
-imageFolderPathArtefact = '/home/camelot/workspace/dicom-tracking-project/trainArtefacte/'
+imageFolderPathCatheter = './train/'
+imageFolderPathArtefact = './trainArtefacte/'
 imagePathArtefact = glob.glob(imageFolderPathArtefact + '/*.png')
 imagePathCatheter = glob.glob(imageFolderPathCatheter + '/*.png')
 
@@ -63,8 +63,8 @@ def loading () :
 
     return X_train, y_train, X_test, y_test
 
-imageFolderPathCatheterTest = '/home/camelot/workspace/dicom-tracking-project/testData/'
-imageFolderPathArtefactTest = '/home/camelot/workspace/dicom-tracking-project/testDataArte/'
+imageFolderPathCatheterTest = './testData/'
+imageFolderPathArtefactTest = './testDataArte/'
 imagePathArtefactTest = glob.glob(imageFolderPathArtefactTest + '/*.png')
 imagePathCatheterTest = glob.glob(imageFolderPathCatheterTest + '/*.png')
 
