@@ -114,7 +114,7 @@ def preprocess (img, refPoint, i) :
     # ----------------------------------------------Histogram-------------------------------------------------
     # To determine the difference between the frame and video to manage parameter in segmentation functions
     numImagetemplate = i
-    # cv2.imwrite('/home/camelot/workspace/dicom-tracking-project/train/templates2(%d).png' % numImagetemplate, img_dicom)
+    # cv2.imwrite('/home/camelot/workspace/dicom-tracking-project/train/templates4(%d).png' % numImagetemplate, img_dicom)
     plt.show()
 
     histo = histogramme.valueHistogram(img_dicom)

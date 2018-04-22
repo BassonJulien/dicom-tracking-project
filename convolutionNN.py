@@ -15,7 +15,8 @@ import loadimages
 
 # Just disables the warning, doesn't enable AVX/FMA
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ["CUDA_VISIBLE_DEVICES"]="0" #for training on gpu
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 train_X,train_Y,test_X,test_Y = loadimages.loading()
 print('Training data shape : ', train_X.shape, train_Y.shape)
@@ -47,29 +48,30 @@ train_X,valid_X,train_label,valid_label = train_test_split(train_X, train_Y_one_
 
 # More the batch size is higher more the algo will be performent
 batch_size = 64
-epochs = 20
+epochs = 250
 num_classes = 2
+
 
 catheter_model = Sequential()
 catheter_model.add(Conv2D(32, kernel_size=(3, 3),activation='linear',input_shape=(150,150,1),padding='same'))
 catheter_model.add(LeakyReLU(alpha=0.1))
 catheter_model.add(MaxPooling2D((2, 2),padding='same'))
-catheter_model.add(Dropout(0.1))
+catheter_model.add(Dropout(0.12))
 
 catheter_model.add(Conv2D(64, (3, 3), activation='linear',padding='same'))
 catheter_model.add(LeakyReLU(alpha=0.1))
 catheter_model.add(MaxPooling2D(pool_size=(2, 2),padding='same'))
-catheter_model.add(Dropout(0.1))
+catheter_model.add(Dropout(0.12))
 
 catheter_model.add(Conv2D(128, (3, 3), activation='linear',padding='same'))
 catheter_model.add(LeakyReLU(alpha=0.2))
 catheter_model.add(MaxPooling2D(pool_size=(2, 2),padding='same'))
-catheter_model.add(Dropout(0.1))
+catheter_model.add(Dropout(0.18))
 
 catheter_model.add(Flatten())
 catheter_model.add(Dense(128, activation='linear'))
 catheter_model.add(LeakyReLU(alpha=0.1))
-catheter_model.add(Dropout(0.15))
+catheter_model.add(Dropout(0.16))
 
 catheter_model.add(Dense(num_classes, activation='softmax'))
 catheter_model.compile(loss=keras.losses.categorical_crossentropy, optimizer=keras.optimizers.Adam(),metrics=['accuracy'])

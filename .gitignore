@@ -14,4 +14,5 @@
 /badResult
 /goodResult
 /testData
-
+*.h5
+*.json

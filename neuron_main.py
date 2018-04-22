@@ -19,6 +19,7 @@ file_name = '/home/camelot/Vidéos/angios/test1.DCM' #marche
 # file_name = '/home/camelot/Vidéos/angios2/ARX1.rot.cdc1.fr.rothschild.P.2104952.1_00000.DCM'
 
 def dicom_converter(file_name):
+    print("-----------------------------------------------------------------------------",file_name)
     model = CatheterPredictor()
     # model = None
     ds = dicom.read_file(file_name)
@@ -48,5 +49,5 @@ def dicom_converter(file_name):
 
 
 # catheter_predictor
-dicom_converter(file_name)
+# dicom_converter(file_name)
 
