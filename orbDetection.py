@@ -10,8 +10,8 @@ y1_crope = 260
 y2_crope = 750
 
 # Image of a catheter model
-template = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/templateCANNYEDGES.png")
-template2 = cv2.imread("/home/camelot/workspace/dicom-tracking-project/template/templateCANNYEDGES2.png")
+template = cv2.imread("/template/templateCANNYEDGES.png")
+template2 = cv2.imread("template/templateCANNYEDGES2.png")
 
 # check if the object is the catheter
 def verifyObject(good,kp1,refPoint):
@@ -44,7 +44,7 @@ def verifyObject(good,kp1,refPoint):
             print('search...',i,size_good)
             point = average(good[i:],kp1,refPoint)
             if point[2]>size_object_recongnize[0]:
-                print("superieur à la precedente",size_object_recongnize[0])
+                print("superieur a la precedente",size_object_recongnize[0])
                 size_object_recongnize = [point[2], i]
                 point = average(good[size_object_recongnize[1]:], kp1, refPoint)
 
@@ -258,15 +258,3 @@ def main_orb_detection (img_dicom, refPoint) :
     # cv2.imshow('edges', img_dicom)
 
     return img_dicom,refPoint
-
-# file_name = '/home/camelot/Vidéos/angios/test1.DCM'
-# file_name = '/home/camelot/Vidéos/angios/ARX1.rot.1a49.fr.rothschild.S.4818696.1_00000.DCM'data_dicom = dicom.read_file(file_name)
-# data_dicom = dicom.read_file(file_name)
-#
-# img_dicom = np.array(data_dicom.pixel_array[0],np.uint8)
-# refPoint = [None, None]
-#
-# outputdata, refPoint = main_orb_detection(img_dicom, refPoint)
-# cv2.imshow('image_dilate', outputdata)
-#
-# cv2.waitKey(0)

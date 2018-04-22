@@ -39,6 +39,7 @@ def dicom_converter(file_name):
         print("refpointab",refPointTab)
         writer.writeFrame(outputdata)
     writer.close()
+    return refPointTab
 
 
 

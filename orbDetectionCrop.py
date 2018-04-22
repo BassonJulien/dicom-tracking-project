@@ -34,7 +34,7 @@ def verifyObject(good,kp1,refPoint):
             print('search...',i,size_good)
             point = average(good[i:],kp1,refPoint)
             if point[2]>size_object_recongnize[0]:
-                print("superieur à la precedente",size_object_recongnize[0])
+                print("superieur a la precedente",size_object_recongnize[0])
                 size_object_recongnize = [point[2], i]
                 point = average(good[size_object_recongnize[1]:], kp1, refPoint)
 
@@ -139,3 +139,4 @@ def main_orb_detection (img_dicom, refPoint,i) :
 
     return img_dicom,refPoint
 
+# cv2.waitKey(0)

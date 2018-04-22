@@ -1,7 +1,11 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import dicom
 import numpy as np
 import cv2
 from matplotlib import pyplot as plt
+
 
 # Constante
 x1_crope = 200
